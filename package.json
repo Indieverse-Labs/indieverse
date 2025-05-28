@@ -1,0 +1,24 @@
+{
+  "name": "indieverse",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "build": "turbo build",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo clean",
+    "dev": "turbo dev --parallel",
+    "test": "turbo test --parallel",
+    "start:app": "turbo start --filter=@indieverse/app",
+    "dev:app": "turbo dev --filter=@indieverse/app",
+    "format": "biome format --write .",
+    "lint": "turbo lint && manypkg check",
+    "typecheck": "turbo typecheck"
+  },
+  "dependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@manypkg/cli": "^0.24.0",
+    "turbo": "2.5.2",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "bun@1.2.11"
+}

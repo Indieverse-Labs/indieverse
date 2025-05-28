@@ -1,0 +1,3 @@
+{
+  "extends": "@indieverse/tsconfig/base.json"
+}
