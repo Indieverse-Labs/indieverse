@@ -13,8 +13,9 @@
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
-    "./tailwind.config": "./tailwind.config.ts",
     "./button": "./src/components/ui/button.tsx",
+    "./card": "./src/components/ui/card.tsx",
+    "./input": "./src/components/ui/input.tsx",
     "./cn": "./src/lib/cn.ts"
   },
   "dependencies": {
