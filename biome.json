@@ -1,33 +1,35 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": ["node_modules/*", ".next", ".turbo", "**/dist", "**/build"]
+  },
   "organizeImports": {
     "enabled": true
   },
   "linter": {
-    "ignore": [".wrangler", "node_modules", ".next"],
     "enabled": true,
     "rules": {
       "recommended": true,
       "a11y": {
-        "noSvgWithoutTitle": "off",
-        "useKeyWithClickEvents": "off"
-      },
-      "style": {
-        "noNonNullAssertion": "off"
+        "noSvgWithoutTitle": "off"
       },
       "correctness": {
-        "useExhaustiveDependencies": "off"
+        "useExhaustiveDependencies": "off",
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "warn"
       }
     }
   },
   "formatter": {
-    "ignore": [".next"],
     "indentStyle": "space"
   },
   "javascript": {
     "formatter": {
+      "indentStyle": "space",
       "quoteStyle": "single",
-      "semicolons": "asNeeded"
+      "semicolons": "asNeeded",
+      "attributePosition": "multiline"
     }
   }
 }

@@ -1,0 +1,27 @@
+{
+  "name": "@indieverse/faucet",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "NODE_ENV=production next build",
+    "clean": "git clean -xdf .next .turbo node_modules",
+    "dev": "TZ=UTC next dev --turbopack",
+    "lint": "biome lint",
+    "format": "biome format --write .",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@indieverse/ui": "workspace:*",
+    "geist": "^1.4.2",
+    "next": "latest",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "19.0.2",
+    "typescript": "5.7.2"
+  }
+}
