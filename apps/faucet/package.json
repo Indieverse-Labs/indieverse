@@ -13,11 +13,18 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
     "@indieverse/ui": "workspace:*",
+    "@rainbow-me/rainbowkit": "^2.2.7",
+    "@tanstack/react-query": "^5.80.7",
     "geist": "^1.4.2",
     "next": "latest",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "react-hook-form": "^7.58.0",
+    "viem": "2.31.2",
+    "wagmi": "^2.15.6",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@types/react": "^19.0.2",

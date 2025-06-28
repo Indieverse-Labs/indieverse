@@ -1,9 +1,56 @@
+'use client'
+
 import { Button } from '@indieverse/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@indieverse/ui/card'
+import { Form, FormField, FormItem } from '@indieverse/ui/components/ui/form'
 import { Input } from '@indieverse/ui/components/ui/input'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
+import { useAccount, useWriteContract } from 'wagmi'
+
+import { abi } from '@/app/abi'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+const formSchema = z.object({
+  address: z.string().min(2, {
+    message: 'must be at least 2 characters.',
+  }),
+})
+
+const contractAddress = '0xe5Bbc2bA6AE4acBBF63baC57477d4cE515e2D596'
 
 export default function Home() {
+  const { data: hash, writeContract } = useWriteContract()
+  const { address } = useAccount()
+
+  console.log(hash)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      address: '',
+    },
+  })
+
+  useEffect(() => {
+    if (address) {
+      form.setValue('address', address)
+    }
+  }, [address])
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+    writeContract({
+      address: contractAddress,
+      abi,
+      functionName: 'withdraw',
+    })
+  }
   return (
     <div className="m-auto w-full h-full fixed bottom-0 overflow-x-hidden overflow-y-auto bg-[url('/assets/layout/noise.svg')] bg-repeat bg-background">
       <div className="p-0 px-8 bg-none h-full md:px-3">
@@ -23,17 +70,33 @@ export default function Home() {
                   className="aspect-square"
                 />
                 <Button>Hello</Button>
+                <ConnectButton />
               </CardHeader>
               <CardContent className="grid grid-cols-1 place-content-center">
                 <Card>
                   <CardContent>
-                    <div className="flex items-center justify-center gap-2">
-                      <Input
-                        placeholder="0x4167A36D575217e54750305909AA2909D9392842"
-                        className="truncate"
-                      />
-                      <Button>Request</Button>
-                    </div>
+                    <Form {...form}>
+                      <form
+                        className="flex items-center justify-center gap-2"
+                        onSubmit={form.handleSubmit(onSubmit)}
+                      >
+                        <FormField
+                          name="address"
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <Input
+                                {...field}
+                                readOnly
+                                placeholder="0x4167A36D575217e54750305909AA2909D9392842"
+                                className="truncate"
+                              />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="submit">Request</Button>
+                      </form>
+                    </Form>
                   </CardContent>
                 </Card>
               </CardContent>
