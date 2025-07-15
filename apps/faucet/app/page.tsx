@@ -44,7 +44,6 @@ export default function Home() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
     writeContract({
       address: contractAddress,
       abi,
@@ -69,7 +68,6 @@ export default function Home() {
                   height={36}
                   className="aspect-square"
                 />
-                <Button>Hello</Button>
                 <ConnectButton />
               </CardHeader>
               <CardContent className="grid grid-cols-1 place-content-center">
@@ -77,7 +75,7 @@ export default function Home() {
                   <CardContent>
                     <Form {...form}>
                       <form
-                        className="flex items-center justify-center gap-2"
+                        className="grid grid-cols-1 sm:grid-cols-[1fr_160px] items-center justify-center gap-2"
                         onSubmit={form.handleSubmit(onSubmit)}
                       >
                         <FormField
