@@ -1,18 +1,18 @@
 'use client'
 
+import { faucet } from '@/app/_actions/faucet'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@indieverse/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@indieverse/ui/card'
 import { Form, FormField, FormItem } from '@indieverse/ui/components/ui/form'
 import { Input } from '@indieverse/ui/components/ui/input'
+import { toast } from '@indieverse/ui/sonner'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
-import { type Address, isAddress } from 'viem'
-import { useAccount } from 'wagmi'
-
-import { faucet } from '@/app/_actions/faucet'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { type Address, isAddress } from 'viem'
+import { useAccount, useChainId } from 'wagmi'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -23,6 +23,7 @@ const formSchema = z.object({
 
 export default function Home() {
   const { address } = useAccount()
+  const chainId = useChainId()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,7 +39,12 @@ export default function Home() {
   }, [address])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await faucet(values)
+    try {
+      await faucet({ ...values, chainId })
+      toast.success(`Tokens sent to ${values.address}`)
+    } catch {
+      toast.error('Failed to send tokens')
+    }
   }
   return (
     <div className="m-auto w-full h-full fixed bottom-0 overflow-x-hidden overflow-y-auto bg-[url('/assets/layout/noise.svg')] bg-repeat bg-background">

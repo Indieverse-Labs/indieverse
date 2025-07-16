@@ -7,21 +7,26 @@ import {
   createPublicClient,
   createWalletClient,
 } from 'viem'
-import { hardhat } from 'viem/chains'
+import { hardhat, sepolia } from 'viem/chains'
 
-const publicClient = createPublicClient({
-  chain: hardhat,
-  transport: http(),
-})
+const contractAddress = process.env.FAUCET_CONTRACT_ADDRESS as Address
 
-const wallet = createWalletClient({
-  chain: hardhat,
-  transport: http(),
-})
+export const faucet = async ({
+  address,
+  chainId,
+}: { address: Address; chainId: number }) => {
+  const chain = chainId === 11155111 ? sepolia : hardhat
 
-const contractAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+  const publicClient = createPublicClient({
+    chain: chain,
+    transport: http(),
+  })
 
-export const faucet = async ({ address }: { address: Address }) => {
+  const wallet = createWalletClient({
+    chain: chain,
+    transport: http(),
+  })
+
   const initial = await publicClient.readContract({
     address: contractAddress,
     abi: contractABI,

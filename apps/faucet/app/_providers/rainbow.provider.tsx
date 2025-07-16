@@ -1,26 +1,18 @@
 'use client'
 
 import '@rainbow-me/rainbowkit/styles.css'
+import { config } from '@/app/_providers/config'
 import {
   RainbowKitProvider,
   type Theme,
-  darkTheme,
-  getDefaultConfig,
+  lightTheme,
 } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
-import { hardhat, sepolia } from 'wagmi/chains'
 
 const queryClient = new QueryClient()
 
-const config = getDefaultConfig({
-  appName: 'My RainbowKit App',
-  projectId: 'YOUR_PROJECT_ID',
-  chains: [sepolia, hardhat],
-  ssr: true,
-})
-
-const defaultTheme = darkTheme()
+const defaultTheme = lightTheme()
 
 const theme: Theme = {
   ...defaultTheme,
@@ -28,18 +20,36 @@ const theme: Theme = {
     ...defaultTheme.colors,
     accentColor: 'var(--accent)',
     accentColorForeground: 'var(--accent-foreground)',
+    connectButtonBackground: 'var(--accent)',
+    connectButtonInnerBackground: 'var(--accent)',
+    connectButtonText: 'var(--accent-foreground)',
+    connectButtonBackgroundError: 'var(--destructive)',
+    connectButtonTextError: 'var(--destructive-foreground)',
+    modalBackground: 'var(--background)',
+    modalBorder: 'var(--border)',
+    modalText: 'var(--foreground)',
+    modalTextSecondary: 'var(--secondary-foreground)',
+    profileForeground: 'var(--background)',
+    profileAction: 'var(--accent)',
+    profileActionHover: 'var(--accent)',
   },
   fonts: {
-    ...defaultTheme.fonts,
     body: 'var(--font-sans)',
   },
   shadows: {
-    ...defaultTheme.shadows,
     connectButton: 'var(--shadow-xs)',
+    dialog: 'var(--shadow-xs)',
+    profileDetailsAction: 'var(--shadow-xs)',
+    selectedOption: 'var(--shadow-xs)',
+    selectedWallet: 'var(--shadow-xs)',
+    walletLogo: 'var(--shadow-xs)',
   },
   radii: {
-    ...defaultTheme.radii,
-    connectButton: '0',
+    actionButton: 'var(--radius)',
+    connectButton: 'var(--radius)',
+    menuButton: 'var(--radius)',
+    modal: 'var(--radius)',
+    modalMobile: 'var(--radius)',
   },
 }
 

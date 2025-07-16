@@ -1,5 +1,6 @@
 import hre from 'hardhat'
 
+import type { Address } from 'viem'
 import { contractABI } from '../abi'
 
 async function main() {
@@ -7,7 +8,7 @@ async function main() {
   const wallet = await hre.viem.getWalletClient(
     '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
   )
-  const contractAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+  const contractAddress = process.env.FAUCET_CONTRACT_ADDRESS as Address
 
   const initial = await client.readContract({
     address: contractAddress,
