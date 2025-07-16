@@ -9,14 +9,14 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
-import { sepolia } from 'wagmi/chains'
+import { hardhat, sepolia } from 'wagmi/chains'
 
 const queryClient = new QueryClient()
 
 const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: 'YOUR_PROJECT_ID',
-  chains: [sepolia],
+  chains: [sepolia, hardhat],
   ssr: true,
 })
 

@@ -3,8 +3,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@indieverse/ui/*": ["../../packages/ui/src/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@indieverse/ui/*": [
+        "../../packages/ui/src/*"
+      ],
+      "@indieverse/contracts/*": [
+        "../../packages/contracts/*"
+      ]
     },
     "plugins": [
       {
@@ -19,5 +26,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

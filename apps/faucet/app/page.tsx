@@ -6,32 +6,28 @@ import { Form, FormField, FormItem } from '@indieverse/ui/components/ui/form'
 import { Input } from '@indieverse/ui/components/ui/input'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
-import { useAccount, useWriteContract } from 'wagmi'
+import { type Address, isAddress } from 'viem'
+import { useAccount } from 'wagmi'
 
-import { abi } from '@/app/abi'
+import { faucet } from '@/app/_actions/faucet'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const formSchema = z.object({
-  address: z.string().min(2, {
-    message: 'must be at least 2 characters.',
-  }),
+  address: z
+    .string()
+    .refine(isAddress, { message: 'Invalid address' }) as z.ZodType<Address>,
 })
 
-const contractAddress = '0xe5Bbc2bA6AE4acBBF63baC57477d4cE515e2D596'
-
 export default function Home() {
-  const { data: hash, writeContract } = useWriteContract()
   const { address } = useAccount()
-
-  console.log(hash)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      address: '',
+      address: '' as Address,
     },
   })
 
@@ -41,14 +37,8 @@ export default function Home() {
     }
   }, [address])
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    writeContract({
-      address: contractAddress,
-      abi,
-      functionName: 'withdraw',
-    })
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await faucet(values)
   }
   return (
     <div className="m-auto w-full h-full fixed bottom-0 overflow-x-hidden overflow-y-auto bg-[url('/assets/layout/noise.svg')] bg-repeat bg-background">
