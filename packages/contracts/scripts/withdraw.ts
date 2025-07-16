@@ -1,17 +1,13 @@
 import hre from 'hardhat'
-import { parseAbi } from 'viem'
 
-const contractABI = parseAbi([
-  'function withdraw() external',
-  'function getBalance() external view returns (uint256)',
-])
+import { contractABI } from '../abi'
 
 async function main() {
   const client = await hre.viem.getPublicClient()
   const wallet = await hre.viem.getWalletClient(
-    '0xBc9ba6aDb3733E2d8A91e2d094642F9b9576C86d',
+    '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
   )
-  const contractAddress = '0xe5Bbc2bA6AE4acBBF63baC57477d4cE515e2D596'
+  const contractAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
 
   const initial = await client.readContract({
     address: contractAddress,
@@ -23,7 +19,7 @@ async function main() {
   const txHash = await wallet.writeContract({
     address: contractAddress,
     abi: contractABI,
-    functionName: 'withdraw',
+    functionName: 'sendMe',
   })
   console.log('Transaction hash:', txHash)
 

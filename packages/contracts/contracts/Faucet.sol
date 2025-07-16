@@ -1,41 +1,43 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
-contract Faucet {
-    address payable public owner;
-
+contract Faucet is Ownable {
     uint256 public constant AMOUNT = 0.1 ether;
-
     uint256 public constant WITHDRAWAL_INTERVAL = 1 minutes;
-
     mapping (address => uint256) public lastWithdrawal;
 
-    constructor() {
-        owner = payable(msg.sender);
-    }
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function");
-        _;
-    }
+    constructor(address initialOwner) Ownable(initialOwner) {}
 
     receive() external payable {}
 
-    function withdraw() external {
-        require(address(this).balance >= AMOUNT, "Insufficient funds in faucet");
-        require(
-            block.timestamp >= lastWithdrawal[msg.sender] + WITHDRAWAL_INTERVAL,
-            "You must wait before requesting again"
-        );
+    fallback() external payable {}
 
-        lastWithdrawal[msg.sender] = block.timestamp;
-
-        payable(msg.sender).transfer(AMOUNT);
-    }
-
-    function getBalance() external view returns (uint256) {
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
+    function _send(address sender) private {
+        uint256 balance = getBalance();
+
+        require(balance >= AMOUNT, "Insufficient funds in faucet");
+        require(
+            block.timestamp >= lastWithdrawal[sender] + WITHDRAWAL_INTERVAL,
+            "You must wait before requesting again"
+        );
+
+        lastWithdrawal[sender] = block.timestamp;
+
+        payable(sender).transfer(AMOUNT);
+    }
+
+    function send(address to) public onlyOwner {
+        _send(to);
+    }
+
+    function sendMe() external {
+        _send(msg.sender);
+    }
 }
