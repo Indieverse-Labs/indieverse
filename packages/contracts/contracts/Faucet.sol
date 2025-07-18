@@ -5,8 +5,8 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
 contract Faucet is Ownable {
-    uint256 public constant AMOUNT = 0.1 ether;
-    uint256 public constant WITHDRAWAL_INTERVAL = 1 minutes;
+    uint256 public constant AMOUNT = 0.01 ether;
+    uint256 public constant WITHDRAWAL_INTERVAL = 24 hours;
     mapping (address => uint256) public lastWithdrawal;
 
     constructor(address initialOwner) Ownable(initialOwner) {}
