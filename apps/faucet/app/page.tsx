@@ -8,6 +8,7 @@ import { Form, FormField, FormItem } from '@indieverse/ui/components/ui/form'
 import { Input } from '@indieverse/ui/components/ui/input'
 import { toast } from '@indieverse/ui/sonner'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAction } from 'next-safe-action/hooks'
 import Image from 'next/image'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,6 +25,14 @@ const formSchema = z.object({
 export default function Home() {
   const { address } = useAccount()
   const chainId = useChainId()
+  const request = useAction(faucet, {
+    onSuccess: ({ input: { address } }) => {
+      toast.success(`Tokens sent to your address: ${address}`)
+    },
+    onError: () => {
+      toast.error('Failed to send tokens')
+    },
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,13 +47,8 @@ export default function Home() {
     }
   }, [address])
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await faucet({ ...values, chainId })
-      toast.success(`Tokens sent to ${values.address}`)
-    } catch {
-      toast.error('Failed to send tokens')
-    }
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    request.execute({ ...values, chainId })
   }
   return (
     <div className="m-auto w-full h-full fixed bottom-0 overflow-x-hidden overflow-y-auto bg-[url('/assets/layout/noise.svg')] bg-repeat bg-background">
