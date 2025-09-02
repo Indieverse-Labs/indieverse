@@ -6,9 +6,11 @@ import { contractABI } from '../abi'
 async function main() {
   const client = await hre.viem.getPublicClient()
   const wallet = await hre.viem.getWalletClient(
-    '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+    '0xBc9ba6aDb3733E2d8A91e2d094642F9b9576C86d',
   )
-  const contractAddress = process.env.FAUCET_CONTRACT_ADDRESS as Address
+  console.log(wallet)
+  const contractAddress =
+    '0x77CB2F9690352b9405a8bfB34aAB0DB2BA20DE44' as Address
 
   const initial = await client.readContract({
     address: contractAddress,
